@@ -1,9 +1,7 @@
-# Bank Term-Deposit Subscription Classifier
+# Bank Market Classifier
 
 ## a. Problem statement
-A Portuguese bank runs phone-based marketing campaigns to sell term deposits. Calling every
-client is expensive, so the goal is to predict whether a client will subscribe (`y` = yes/no)
-from their profile and campaign history. This is a **binary classification** task. Five
+A Portuguese bank runs phone campaigns to sell term deposits, but calling every client is costly. This project predicts whether a client will subscribe (y = yes/no) from their profile and campaign history, so the bank can focus calls on likely buyers. This is a **binary classification** task. Five
 classifiers (Logistic Regression, Decision Tree, KNN, Gaussian Naive Bayes, SVM) are trained
 on the same data, compared on six metrics, and demonstrated in a Streamlit app.
 
@@ -14,14 +12,13 @@ on the same data, compared on six metrics, and demonstrated in a Streamlit app.
   - Numeric (7): `age`, `balance`, `day`, `duration`, `campaign`, `pdays`, `previous`
   - Categorical (9): `job`, `marital`, `education`, `default`, `housing`, `loan`, `contact`, `month`, `poutcome`
 - **Target:** `y` - whether the client subscribed to a term deposit (yes = 11.5%, no = 88.5%) -> imbalanced
-- **Missing values:** none (unknown categories are kept as the label `unknown`)
-- **Preprocessing:** `StandardScaler` on numeric columns and `OneHotEncoder` on categorical columns, built into a scikit-learn `Pipeline` with each classifier, so every saved model accepts raw CSV rows.
-- **Note:** `duration` (call length) is only known after the call, so it makes the task easier than a real-world setting.
+- **Missing values:** none 
+- **Preprocessing:** `StandardScaler` on numeric columns and `OneHotEncoder` on categorical columns, built into a scikit-learn `Pipeline` with each classifier.
 
 ## c. GitHub repository link
-<[GITHUB REPO LINK](https://github.com/Namita2471/Bank-Market-Classifier.git)>
+Git Repo: https://github.com/Namita2471/Bank-Market-Classifier.git
 
-Live app: <[STREAMLIT APP LINK](https://bank-market-classifier-gbektkseoy36emc2k6g8ja.streamlit.app/)>
+Streamlit Live app: https://bank-market-classifier-gbektkseoy36emc2k6g8ja.streamlit.app/
 
 ## d. Models used
 
@@ -41,12 +38,12 @@ Hyperparameters: Logistic Regression (`max_iter=1000`), Decision Tree (`max_dept
 
 | ML Model Name | Observation about model performance |
 |---|---|
-| Logistic Regression | <WRITE YOUR OWN OBSERVATION> |
-| Decision Tree | <WRITE YOUR OWN OBSERVATION> |
-| KNN | <WRITE YOUR OWN OBSERVATION> |
-| Naive Bayes | <WRITE YOUR OWN OBSERVATION> |
-| Support Vector Machine | <WRITE YOUR OWN OBSERVATION> |
-| **Overall winner for this dataset?** | <YOUR CHOICE AND REASONING> |
+| Logistic Regression | <Accuracy is high (0.8972) and AUC is among the best (0.8759), so it ranks positive and negative cases well. Precision is decent (0.6222), but recall is low (0.2692), so it misses about 73% of the customers who would subscribe. F1 (0.3758) and MCC (0.3639) show a reasonable but limited balance. It is simple, stable and a strong baseline.> |
+| Decision Tree | <Accuracy is 0.8917 with a lower AUC (0.8060), so its probability ranking is weaker than the linear models (a depth-6 tree gives coarse probability estimates). It has the second-best recall (0.3269) and the best F1 among the non-NB models (0.4096), and its MCC (0.3686) is close to Logistic Regression. It catches more positives than LR or KNN, at the cost of lower precision (0.5484).> |
+| KNN | <It has the weakest overall performance. Accuracy (0.8884) is close to the others, but that mostly reflects predicting the majority class. Recall is very low (0.1635), F1 is only 0.2519, and MCC is 0.2560, the lowest of all models. With k=7, the majority-class neighbours dominate in this imbalanced, high-dimensional feature space. AUC (0.8112) is moderate.> |
+| Naive Bayes | <It has the lowest accuracy (0.8442) and lowest AUC (0.7734), as the independence assumption does not hold well for correlated features. However, it has the highest recall (0.4231), so it finds the most actual subscribers, but precision is poor (0.3520), meaning many false alarms. It is a good choice only when missing a potential customer is costlier than contacting a wrong one.> |
+| Support Vector Machine | <It has the best accuracy (0.9017), precision (0.6744) and MCC (0.3918), and ties with Logistic Regression for the best AUC (0.8759). Recall is still low (0.2788), so it is conservative in predicting “yes”, but the predictions it makes are the most reliable. The RBF kernel captures non-linear patterns better than the linear model.> |
+| **Overall winner for this dataset?** | <**Support Vector Machine** is the best overall model for this dataset. It leads on Accuracy (0.9017), Precision (0.6744) and MCC (0.3918), and ties for the highest AUC (0.8759). MCC is the most trustworthy single metric here because it accounts for class imbalance, and SVM is highest on it.> |
 
 ## Repository structure
 ```
@@ -55,14 +52,14 @@ Hyperparameters: Logistic Regression (`max_iter=1000`), Decision Tree (`max_dept
 ├── metrics_comparison.csv # comparison table generated by the notebook
 ├── requirements.txt
 ├── README.md
-├── test_data.csv          # held-out test set (upload this in the app)
+├── test_data.csv          # test set
 ├── train_data.csv
-└── model/                 # saved pipelines (.joblib), one per classifier
+└── model/                 # (.joblib), one per classifier
 ```
 
 ## Run locally
 ```
 pip install -r requirements.txt
-jupyter notebook            # open train_models.ipynb and Run All (optional: regenerates model/*.joblib)
+jupyter notebook            # open train_models.ipynb and Run All
 streamlit run app.py
 ```
