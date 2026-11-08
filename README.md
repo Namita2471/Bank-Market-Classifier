@@ -19,9 +19,9 @@ on the same data, compared on six metrics, and demonstrated in a Streamlit app.
 - **Note:** `duration` (call length) is only known after the call, so it makes the task easier than a real-world setting.
 
 ## c. GitHub repository link
-<PASTE YOUR GITHUB REPO LINK HERE>
+<[GITHUB REPO LINK](https://github.com/Namita2471/Bank-Market-Classifier.git)>
 
-Live app: <PASTE YOUR STREAMLIT APP LINK HERE>
+Live app: <[STREAMLIT APP LINK](https://bank-market-classifier-gbektkseoy36emc2k6g8ja.streamlit.app/)>
 
 ## d. Models used
 
